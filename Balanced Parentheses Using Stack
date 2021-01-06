@@ -1,0 +1,112 @@
+#include<iostream>
+using namespace std;
+template < class t>
+class stack{
+	
+	struct node{
+		t item;
+		node *next;
+	};
+	
+	node *top;
+	
+ public:
+ 	
+ 	stack(){
+ 		top = NULL;
+	 }
+	
+	void push (t nitem){
+		node *new_node = new node;
+		new_node -> item = nitem;
+		new_node -> next = top;
+		top = new_node;
+	}
+	
+	bool is_empty (){
+		return top == NULL;
+	}
+	
+	void pop(){
+		
+		if(is_empty ())
+		 cout << "Stack is empty\n";
+		 
+		 else{
+		 	node *temp = top;
+		 	top = top -> next;
+		 	temp = temp -> next = NULL;
+		 	delete temp;
+		 }
+	}
+	
+	t get_top (){
+		
+		if(is_empty())
+		return 0;
+		
+		else{
+			t stacktop = top -> item;
+			return stacktop;
+		}
+	} 
+    
+	void display (){
+		
+		node *cur = top;
+		for (int i = 0; cur != NULL; i++){
+		cout << cur -> item << endl;
+		cur = cur -> next;	
+		}
+	}	
+};
+///////////////////////////////////////////////////////
+////// This is a balanced parentheses using stack;
+
+bool arepair(char open , char close){
+      
+	  if (open == '(' && close == ')')
+	               return true;
+	
+	else if (open == '{' && close == '}')
+	               return true;
+				   
+	else if (open == '[' && close == ']')
+	                return true;
+	
+	else 
+	                 return false;				  			      			   	
+}
+
+bool arebalanced (string exp){
+	
+	stack <char> s;
+	for (int i = 0; i < exp.length(); i++){
+		
+		if (exp[i] == '(' || exp[i] == '{' || exp[i] == '[')
+		              s.push(exp[i]);
+		              
+		else if (exp[i] == ')' || exp[i] == '}' || exp[i] == ']'){
+			
+			if (s.is_empty() || !arepair(s.get_top(), exp[i]))
+			       return false;
+			else
+			       s.pop();      
+		}             
+	}
+	return s.is_empty();
+}
+
+
+int main (){
+	
+	string ex;
+	cout << "enter the exp \n";
+	cin >> ex;
+	
+	if(arebalanced(ex))
+	cout << "Balanced\n";
+	
+	else
+	cout << "Not balanced\n";
+}
